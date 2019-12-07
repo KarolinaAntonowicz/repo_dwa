@@ -54,13 +54,22 @@ def generateLettersReport():
 
 generateLettersReport()
 
+senetences = full_stops+exclamation_mark+question_mark+dash+ellipsis
+punctuation_marks = full_stops+commas+semicolon+exclamation_mark+question_mark+dash+colon+ellipsis
+
 print('Total words:   ', words)
-print('Total characterss:   ',characters)
-print ('total stops:    ', full_stops)
-print ('total commas:    ', commas)
-print ('total semicolons:    ', semicolon)
-print ('total exclamation mark:    ', exclamation_mark)
-print ('total question marks:    ', question_mark)
-print ('total dash:    ', dash)
-print ('total colon:    ', colon)
-print ('total elipsis:    ', ellipsis)
+print('Total characters:   ',characters)
+# print ('total stops:    ', full_stops)
+# print ('total commas:    ', commas)
+# print ('total semicolons:    ', semicolon)
+# print ('total exclamation mark:    ', exclamation_mark)
+# print ('total question marks:    ', question_mark)
+# print ('total dash:    ', dash)
+# print ('total colon:    ', colon)
+# print ('total elipsis:    ', ellipsis)
+print('total punctuation marks: ', punctuation_marks)
+print('total senetences: ' , senetences)
+
+plik = open('statystyki.txt', 'w')
+plik.write("3: %s \n4: %s \n5: %s" % (words, punctuation_marks, senetences))
+plik.close()
