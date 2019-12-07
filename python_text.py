@@ -51,8 +51,10 @@ def generateLettersReport():
             x[i] = line.count(letter)
             x[i] += line.count(letter.lower())
         print(letter, ': ', x[i])
+    return sum(x)
 
-generateLettersReport()
+#sum of all letters
+sumOfAllLetters = generateLettersReport()
 
 print('Total words:   ', words)
 print('Total characterss:   ',characters)
