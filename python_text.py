@@ -1,0 +1,66 @@
+import requests
+
+#downloadnig file
+print('Download Starting...')
+url = 'https://s3.zylowski.net/public/input/6.txt'
+r = requests.get(url)
+filename = url.split('/')[-1]
+#zapisywanie pliku
+with open(filename, 'wb') as f:
+    f.write(r.content)
+print('Download Completed!!!')
+#otwieranie pliku
+file = open (filename, 'r')
+lines = list (file)
+file_contents = file.read()
+file.close()
+
+#counting words and charackters
+words_all = 0
+characters = 0
+words = 0
+full_stops = 0
+commas = 0
+#counting punctuation marks
+semicolon = 0
+exclamation_mark = 0
+question_mark = 0
+dash = 0
+colon = 0
+ellipsis = 0
+
+#start loop
+for line in lines:
+    words_all = words_all + len(line.split())
+    wordslist = line.split()
+    words = words + len(wordslist)
+    characters += sum(len(word) for word in wordslist)
+    full_stops = full_stops + len(line.split('.'))
+    commas = commas + len(line.split(','))
+    semicolon = semicolon + len(line.split('.'))
+    exclamation_mark = exclamation_mark + len(line.split('!'))
+    question_mark = question_mark + len(line.split('?'))
+    dash = dash + len(line.split('-'))
+    colon = colon + len(line.split(':'))
+    ellipsis = ellipsis + len(line.split('...'))
+
+def generateLettersReport():
+    x = [None] * 26
+    for i, letter in enumerate('ABCDEFGHIJKLMNOPQRSTUVWXYZ'):
+        for line in lines:
+            x[i] = line.count(letter)
+            x[i] += line.count(letter.lower())
+        print(letter, ': ', x[i])
+
+generateLettersReport()
+
+print('Total words:   ', words)
+print('Total characterss:   ',characters)
+print ('total stops:    ', full_stops)
+print ('total commas:    ', commas)
+print ('total semicolons:    ', semicolon)
+print ('total exclamation mark:    ', exclamation_mark)
+print ('total question marks:    ', question_mark)
+print ('total dash:    ', dash)
+print ('total colon:    ', colon)
+print ('total elipsis:    ', ellipsis)
