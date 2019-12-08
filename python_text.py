@@ -3,12 +3,17 @@ import os
 
 menu = ['1. Pobierz plik z internetu', '2. Zlicz liczbę liter w pobranym pliku', '3. Zlicz liczbę wyrazów w pliku', '4. Zlicz liczbę znaków interpunkcyjnych w pliku.', '5. Zlicz liczbę zdań w pliku', '6. Wygeneruj raport o użyciu liter (A-Z)', '7. Zapisz statystyki z punktów 2-5 do pliku statystyki.txt', '8. Wyjście z programu']
 isWorking = True
-
+status_code = 200
 text = list()
 
 def download():
-    url = 'https://s3.zylowski.net/public/input/6.txt'
+    global status_code
+    url = 'https://s3.zylowski.net/public/dupa/6.txt'
     r = requests.get(url)
+    if r.status_code != 200:
+        print ("error")
+        status_code = 0
+        return 0
     filename = url.split('/')[-1]
     #zapisywanie pliku
     with open(filename, 'wb') as f:
@@ -24,12 +29,20 @@ def download():
 text=download()
 
 def countWords(text):
+    global status_code
+    if status_code == 0:
+        print('error')
+        return 0
     for line in text:
         wordslist = line.split()
         words = len(wordslist)
     return words
 
 def countLetters(text, printing):
+    global status_code
+    if status_code == 0:
+        print('error')
+        return 0
     x = [None] * 26
     for i, letter in enumerate('ABCDEFGHIJKLMNOPQRSTUVWXYZ'):
         for line in text:
@@ -42,6 +55,10 @@ def countLetters(text, printing):
     return sum(x)
 
 def countPunctations(text):
+    global status_code
+    if status_code == 0:
+        print('error')
+        return 0
     full_stops = 0
     commas = 0
     semicolon = 0
@@ -62,6 +79,10 @@ def countPunctations(text):
     return full_stops+commas+semicolon+exclamation_mark+question_mark+dash+colon+ellipsis
 
 def countSentences(text):
+    global status_code
+    if status_code == 0:
+        print('error')
+        return 0
     full_stops = 0    
     exclamation_mark = 0
     question_mark = 0
@@ -73,13 +94,12 @@ def countSentences(text):
         question_mark = question_mark + len(line.split('?'))
     return full_stops+exclamation_mark+question_mark+ellipsis
 
-
 while(isWorking):
     for element in menu:
         print(element)
     action = int(input())
     if action == 1:
-        text=download()
+        text = download()
     elif action == 2:
         print('Total letters:   ', countLetters(text, False))
     elif action == 3:
@@ -95,6 +115,8 @@ while(isWorking):
         plik.write("2: %s\n3: %s \n4: %s \n5: %s" % (countLetters(text, False), countWords(text), countPunctations(text), countSentences(text)))
         plik.close()
     elif action == 8:
-        os.remove("statystyki.txt")
-        os.remove("6.txt" )
+        if(os.path.exists("statystyki.txt")):
+            os.remove("statystyki.txt")
+        if(os.path.exists("6.txt")):
+            os.remove("6.txt")
         isWorking = False
