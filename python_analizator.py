@@ -32,3 +32,16 @@ def countWords(text):
         wordslist = line.split()
         words = len(wordslist)
     return words
+
+def countLetters(text, printing):
+    x = [None] * 26
+    for i, letter in enumerate('ABCDEFGHIJKLMNOPQRSTUVWXYZ'):
+        for line in text:
+            # print(line.count(letter))
+            x[i] = line.count(letter)
+            x[i] += line.count(letter.lower())
+        if printing == True:
+            print(letter, ': ', x[i])
+    # print(x)
+    return sum(x)
+
