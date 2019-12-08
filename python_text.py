@@ -51,8 +51,10 @@ def generateLettersReport():
             x[i] = line.count(letter)
             x[i] += line.count(letter.lower())
         print(letter, ': ', x[i])
+    return sum(x)
 
-generateLettersReport()
+#sum of all letters
+sumOfAllLetters = generateLettersReport()
 
 senetences = full_stops+exclamation_mark+question_mark+dash+ellipsis
 punctuation_marks = full_stops+commas+semicolon+exclamation_mark+question_mark+dash+colon+ellipsis
