@@ -81,3 +81,5 @@ while (isWorking):
     for element in menu:
         print(element)
     action = int(input())
+    if action == 4:
+        countPunctations(text)
