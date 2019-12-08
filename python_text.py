@@ -1,75 +1,100 @@
 import requests
+import os
 
-#downloadnig file
-print('Download Starting...')
-url = 'https://s3.zylowski.net/public/input/6.txt'
-r = requests.get(url)
-filename = url.split('/')[-1]
-#zapisywanie pliku
-with open(filename, 'wb') as f:
-    f.write(r.content)
-print('Download Completed!!!')
-#otwieranie pliku
-file = open (filename, 'r')
-lines = list (file)
-file_contents = file.read()
-file.close()
+menu = ['1. Pobierz plik z internetu', '2. Zlicz liczbę liter w pobranym pliku', '3. Zlicz liczbę wyrazów w pliku', '4. Zlicz liczbę znaków interpunkcyjnych w pliku.', '5. Zlicz liczbę zdań w pliku', '6. Wygeneruj raport o użyciu liter (A-Z)', '7. Zapisz statystyki z punktów 2-5 do pliku statystyki.txt', '8. Wyjście z programu']
+isWorking = True
 
-#counting words and charackters
-words_all = 0
-characters = 0
-words = 0
-full_stops = 0
-commas = 0
-#counting punctuation marks
-semicolon = 0
-exclamation_mark = 0
-question_mark = 0
-dash = 0
-colon = 0
-ellipsis = 0
+text = list()
 
-#start loop
-for line in lines:
-    words_all = words_all + len(line.split())
-    wordslist = line.split()
-    words = words + len(wordslist)
-    characters += sum(len(word) for word in wordslist)
-    full_stops = full_stops + len(line.split('.'))
-    commas = commas + len(line.split(','))
-    semicolon = semicolon + len(line.split('.'))
-    exclamation_mark = exclamation_mark + len(line.split('!'))
-    question_mark = question_mark + len(line.split('?'))
-    dash = dash + len(line.split('-'))
-    colon = colon + len(line.split(':'))
-    ellipsis = ellipsis + len(line.split('...'))
+def download():
+    url = 'https://s3.zylowski.net/public/input/6.txt'
+    r = requests.get(url)
+    filename = url.split('/')[-1]
+    #zapisywanie pliku
+    with open(filename, 'wb') as f:
+        f.write(r.content)
+    
+    #otwieranie pliku
+    file = open (filename, 'r')
+    text = list (file)
+    # text = file.read()
+    file.close()
+    return text
 
-def generateLettersReport():
+text=download()
+
+def countWords(text):
+    for line in text:
+        wordslist = line.split()
+        words = len(wordslist)
+    return words
+
+def countLetters(text, printing):
     x = [None] * 26
     for i, letter in enumerate('ABCDEFGHIJKLMNOPQRSTUVWXYZ'):
-        for line in lines:
+        for line in text:
+            # print(line.count(letter))
             x[i] = line.count(letter)
             x[i] += line.count(letter.lower())
-        print(letter, ': ', x[i])
+        if printing == True:
+            print(letter, ': ', x[i])
+    # print(x)
+    return sum(x)
 
-generateLettersReport()
+def countPunctations(text):
+    full_stops = 0
+    commas = 0
+    semicolon = 0
+    exclamation_mark = 0
+    question_mark = 0
+    dash = 0
+    colon = 0
+    ellipsis = 0
+    for line in text:
+        full_stops = full_stops + len(line.split('.'))
+        commas = commas + len(line.split(','))
+        semicolon = semicolon + len(line.split(';'))
+        exclamation_mark = exclamation_mark + len(line.split('!'))
+        question_mark = question_mark + len(line.split('?'))
+        dash = dash + len(line.split('-'))
+        colon = colon + len(line.split(':'))
+        ellipsis = ellipsis + len(line.split('...'))
+    return full_stops+commas+semicolon+exclamation_mark+question_mark+dash+colon+ellipsis
 
-senetences = full_stops+exclamation_mark+question_mark+dash+ellipsis
-punctuation_marks = full_stops+commas+semicolon+exclamation_mark+question_mark+dash+colon+ellipsis
+def countSentences(text):
+    full_stops = 0    
+    exclamation_mark = 0
+    question_mark = 0
+    ellipsis = 0
+    for line in text:
+        full_stops = full_stops + len(line.split('.'))
+        ellipsis = ellipsis + len(line.split('...'))
+        exclamation_mark = exclamation_mark + len(line.split('!'))
+        question_mark = question_mark + len(line.split('?'))
+    return full_stops+exclamation_mark+question_mark+ellipsis
 
-print('Total words:   ', words)
-print('Total characters:   ',characters)
-# print ('total stops:    ', full_stops)
-# print ('total commas:    ', commas)
-# print ('total semicolons:    ', semicolon)
-# print ('total exclamation mark:    ', exclamation_mark)
-# print ('total question marks:    ', question_mark)
-# print ('total dash:    ', dash)
-# print ('total colon:    ', colon)
-# print ('total elipsis:    ', ellipsis)
-print('total punctuation marks: ', punctuation_marks)
-print('total senetences: ' , senetences)
 
-plik = open('statystyki.txt', 'w')
-plik.write("3: %s \n4: %s \n5: %s" % (words, punctuation_marks, senetences))
-plik.close()
+while(isWorking):
+    for element in menu:
+        print(element)
+    action = int(input())
+    if action == 1:
+        text=download()
+    elif action == 2:
+        print('Total letters:   ', countLetters(text, False))
+    elif action == 3:
+        print('Total words:   ', countWords(text))
+    elif action == 4:
+        print('Total texts:   ', countPunctations(text))
+    elif action == 5:
+        print('Total sentences:    ', countSentences(text))
+    elif action == 6:
+        countLetters(text, True)
+    elif action == 7:
+        plik = open('statystyki.txt', 'w')
+        plik.write("2: %s\n3: %s \n4: %s \n5: %s" % (countLetters(text, False), countWords(text), countPunctations(text), countSentences(text)))
+        plik.close()
+    elif action == 8:
+        os.remove("statystyki.txt")
+        os.remove("6.txt" )
+        isWorking = False
