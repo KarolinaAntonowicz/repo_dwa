@@ -1,4 +1,5 @@
 import requests
+import os
 
 #downloadnig file
 print('Download Starting...')
@@ -75,3 +76,14 @@ print('total senetences: ' , senetences)
 plik = open('statystyki.txt', 'w')
 plik.write("2: %s\n3: %s \n4: %s \n5: %s" % (sumOfAllLetters, words, punctuation_marks, senetences))
 plik.close()
+
+#Delete files and exit program
+g = input("Exit program and delete files? Type 'y' to proceed or any key to cancel\n")
+if g == "y": 
+    os.remove("statystyki.txt")
+    os.remove("6.txt" )
+    print("Files Removed!")
+    exit()
+else:
+    print ('doing nothing')
+
