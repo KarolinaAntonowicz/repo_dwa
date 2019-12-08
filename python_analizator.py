@@ -10,7 +10,7 @@ text = list()
 
 
 def download():
-    url = 'https://s3.zylowski.net/public/input/6.txt'
+   
     r = requests.get(url)
     filename = url.split('/')[-1]
     # zapisywanie pliku
