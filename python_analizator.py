@@ -76,3 +76,8 @@ def countSentences(text):
         exclamation_mark = exclamation_mark + len(line.split('!'))
         question_mark = question_mark + len(line.split('?'))
     return full_stops + exclamation_mark + question_mark + ellipsis
+
+while (isWorking):
+    for element in menu:
+        print(element)
+    action = int(input())
