@@ -73,5 +73,5 @@ print('total punctuation marks: ', punctuation_marks)
 print('total senetences: ' , senetences)
 
 plik = open('statystyki.txt', 'w')
-plik.write("3: %s \n4: %s \n5: %s" % (words, punctuation_marks, senetences))
+plik.write("2: %s\n3: %s \n4: %s \n5: %s" % (sumOfAllLetters, words, punctuation_marks, senetences))
 plik.close()
