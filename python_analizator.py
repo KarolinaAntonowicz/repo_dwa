@@ -26,3 +26,9 @@ def download():
 
 
 text = download()
+
+def countWords(text):
+    for line in text:
+        wordslist = line.split()
+        words = len(wordslist)
+    return words
