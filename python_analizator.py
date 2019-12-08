@@ -13,11 +13,11 @@ def download():
 
     r = requests.get(url)
     filename = url.split('/')[-1]
-    # zapisywanie pliku
+    # writing file
     with open(filename, 'wb') as f:
         f.write(r.content)
 
-    # otwieranie pliku
+    # open file
     file = open(filename, 'r')
     text = list(file)
     # text = file.read()
